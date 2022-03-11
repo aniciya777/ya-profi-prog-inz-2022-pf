@@ -35,15 +35,15 @@ def create_prize(promo_id):
         return make_response(jsonify({'error': 'Bad request'}), 400)
 
 
-@blueprint.route('/promo/<int:promo_id>/participant/<int:participant_id>', methods=['DELETE'])
-def delete_participant(promo_id, participant_id):
+@blueprint.route('/promo/<int:promo_id>/prize/<int:prize_id>', methods=['DELETE'])
+def delete_participant(promo_id, prize_id):
     db_sess = db_session.create_session()
     promo = db_sess.query(Promotions).get(promo_id)
     if not promo:
         return make_response(jsonify({'error': 'Not found'}), 404)
-    part = db_sess.query(Participants).get(participant_id)
-    if not part or part.promotion != promo:
+    prize = db_sess.query(Prizes).get(prize_id)
+    if not prize or prize.promotion != promo:
         return make_response(jsonify({'error': 'Not found'}), 404)
-    db_sess.delete(part)
+    db_sess.delete(prize)
     db_sess.commit()
     return jsonify({'success': 'OK'})
