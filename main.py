@@ -1,5 +1,5 @@
 from flask import Flask, make_response, jsonify
-from data import db_session, promotion_api
+from data import db_session, promotion_api, participant_api, prize_api
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -13,7 +13,9 @@ def not_found(error):
 def main():
     db_session.global_init("db/database.db")
     app.register_blueprint(promotion_api.blueprint)
-    app.run(host='127.0.0.1', port=8080)
+    app.register_blueprint(participant_api.blueprint)
+    app.register_blueprint(prize_api.blueprint)
+    app.run(host='127.0.0.1', port=8080, debug=True)
 
 
 if __name__ == '__main__':
